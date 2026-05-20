@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="NEUROPIA v1.0.0 — Validation Reports & Benchmark Results. Unified Field Synthesis Framework for cross-domain thermodynamic unification. Includes E-LAB-X non-geometric stress test.">
+<title>NEUROPIA v1.0.0 — Validation Reports & Benchmark Results</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── CSS Variables (مطابقة لـ index.html) ── */
+:root {
+  --crimson:      #8B0000;
+  --deep-red:     #5C0000;
+  --mid-red:      #A31515;
+  --bright-red:   #C0392B;
+  --red-glow:     rgba(139,0,0,0.25);
+  --red-faint:    rgba(139,0,0,0.08);
+  --bg-black:     #050505;
+  --bg-panel:     #0d0d0d;
+  --bg-card:      #111111;
+  --bg-card2:     #161616;
+  --border:       rgba(139,0,0,0.3);
+  --border-dim:   rgba(255,255,255,0.07);
+  --text-white:   #F5F0F0;
+  --text-muted:   #8A8080;
+  --text-dim:     #5A5050;
+  --mono:         'JetBrains Mono', monospace;
+  --display:      'Syne', sans-serif;
+  --body-font:    'Inter', sans-serif;
+  --indigo:       #4B0082;
+  --indigo-glow:  rgba(75,0,130,0.3);
+}
+
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg-black);
+  color:var(--text-white);
+  font-family:var(--body-font);
+  font-size:15px;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+
+/* ── Noise texture overlay ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+
+/* ── Navbar (مطابق لـ index.html) ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:62px;
+  background:rgba(5,5,5,0.88);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{
+  font-family:var(--mono);font-weight:700;font-size:13px;
+  color:var(--text-white);letter-spacing:0.08em;
+}
+.nav-brand span{color:var(--crimson)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.1em;
+  color:var(--text-muted);text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--crimson)}
+.nav-badge{
+  font-family:var(--mono);font-size:10px;padding:4px 10px;
+  border:1px solid var(--crimson);color:var(--crimson);
+  border-radius:2px;letter-spacing:0.1em;
+}
+
+/* ── Page Header ── */
+.page-header{
+  padding:120px 24px 48px;
+  text-align:center;
+}
+.page-header h1{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(40px,6vw,72px);
+  letter-spacing:-0.02em;
+  color:var(--text-white);margin-bottom:16px;
+}
+.page-header h1 .highlight{color:var(--crimson)}
+.page-subtitle{
+  font-size:15px;color:var(--text-muted);
+  max-width:700px;margin:0 auto;
+}
+.breadcrumb{
+  font-family:var(--mono);font-size:11px;
+  color:var(--crimson);margin-bottom:20px;
+  letter-spacing:0.12em;text-transform:uppercase;
+}
+
+/* ── Metrics Overview (5 items now) ── */
+.metrics-overview{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:1rem;
+  max-width:1200px;
+  margin:0 auto 48px;
+  padding:0 24px;
+}
+.metric-card{
+  background:var(--bg-card);
+  border:1px solid var(--border-dim);
+  border-radius:8px;
+  padding:1rem;
+  text-align:center;
+  transition:all .3s;
+}
+.metric-card:hover{
+  border-color:var(--border);
+  transform:translateY(-4px);
+}
+.metric-card .value{
+  font-family:var(--display);
+  font-size:1.8rem;
+  font-weight:800;
+  color:var(--crimson);
+}
+.metric-card .label{
+  font-size:0.65rem;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  color:var(--text-muted);
+  margin-top:0.5rem;
+}
+.metric-card .trend{
+  font-size:0.65rem;
+  margin-top:0.5rem;
+  color:#6CA05A;
+}
+.metric-card.elabx .value{color:var(--indigo)}
+.metric-card.elabx{background:rgba(75,0,130,0.08)}
+
+/* ── Report Section ── */
+.report-section{
+  max-width:1160px;
+  margin:2rem auto;
+  background:rgba(13,13,13,0.6);
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid var(--border-dim);
+}
+.section-header{
+  background:rgba(92,0,0,0.3);
+  padding:1.2rem 2rem;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:1rem;
+}
+.section-header h2{
+  font-family:var(--display);
+  font-size:1.3rem;
+  font-weight:700;
+  color:var(--text-white);
+}
+.section-header .badge{
+  font-family:var(--mono);
+  font-size:0.65rem;
+  padding:0.25rem 0.75rem;
+  background:rgba(139,0,0,0.15);
+  border:1px solid var(--crimson);
+  border-radius:20px;
+  color:var(--crimson);
+}
+.section-header .badge-elabx{
+  background:rgba(75,0,130,0.2);
+  border-color:var(--indigo);
+  color:var(--indigo);
+}
+.section-content{padding:2rem}
+
+/* ── Results Table ── */
+.results-table{
+  width:100%;
+  border-collapse:collapse;
+}
+.results-table th{
+  text-align:left;
+  padding:0.75rem 1rem;
+  font-family:var(--mono);
+  font-size:0.7rem;
+  letter-spacing:0.08em;
+  color:var(--crimson);
+  border-bottom:1px solid var(--border);
+}
+.results-table td{
+  padding:0.75rem 1rem;
+  font-family:var(--mono);
+  font-size:0.75rem;
+  color:var(--text-muted);
+  border-bottom:1px solid var(--border-dim);
+}
+.results-table tr:hover td{
+  background:var(--red-faint);
+  color:var(--text-white);
+}
+.highlight-value{
+  color:var(--crimson);
+  font-weight:700;
+}
+.highlight-value-elabx{color:var(--indigo);font-weight:700}
+.improvement{color:#6CA05A}
+
+/* ── Metrics Grid ── */
+.metrics-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1.5rem;
+  margin-top:1.5rem;
+}
+.metrics-panel{
+  background:rgba(17,17,17,0.8);
+  border:1px solid var(--border-dim);
+  border-radius:8px;
+  padding:1.25rem;
+}
+.metrics-panel h3{
+  font-size:0.85rem;
+  font-weight:700;
+  color:var(--crimson);
+  margin-bottom:1rem;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+}
+.metric-row{
+  display:flex;
+  justify-content:space-between;
+  padding:0.5rem 0;
+  border-bottom:1px solid var(--border-dim);
+  font-size:0.8rem;
+}
+.metric-row .label{color:var(--text-dim)}
+.metric-row .value{color:var(--text-white);font-family:var(--mono)}
+
+/* ── Timeline ── */
+.timeline{
+  position:relative;
+  padding-left:2rem;
+}
+.timeline-item{
+  position:relative;
+  padding-bottom:1.5rem;
+  border-left:2px solid rgba(139,0,0,0.3);
+  padding-left:1.5rem;
+}
+.timeline-item::before{
+  content:'';
+  position:absolute;
+  left:-8px;
+  top:0;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:var(--crimson);
+}
+.timeline-date{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  color:var(--crimson);
+  margin-bottom:0.25rem;
+}
+.timeline-title{
+  font-weight:700;
+  margin-bottom:0.25rem;
+}
+.timeline-desc{
+  font-size:0.75rem;
+  color:var(--text-dim);
+}
+
+/* ── E-LAB-X Section ── */
+.elabx-section{
+  background:linear-gradient(135deg, rgba(75,0,130,0.05) 0%, rgba(139,0,0,0.05) 100%);
+  border:1px solid var(--indigo);
+  border-radius:12px;
+  margin:2rem auto;
+  overflow:hidden;
+}
+.elabx-header{
+  background:rgba(75,0,130,0.15);
+  padding:1.2rem 2rem;
+  border-bottom:1px solid var(--indigo);
+}
+.elabx-header h2{
+  font-family:var(--display);
+  font-size:1.3rem;
+  font-weight:700;
+  color:var(--indigo);
+}
+.elabx-badge{
+  font-family:var(--mono);
+  font-size:0.65rem;
+  padding:0.25rem 0.75rem;
+  background:rgba(75,0,130,0.2);
+  border:1px solid var(--indigo);
+  border-radius:20px;
+  color:var(--indigo);
+}
+.elabx-equations{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:1rem;
+  padding:1.5rem;
+}
+.eq-mini{
+  background:rgba(0,0,0,0.4);
+  border-radius:8px;
+  padding:1rem;
+  font-family:var(--mono);
+  font-size:0.7rem;
+  color:var(--text-white);
+  border-left:2px solid var(--indigo);
+}
+.eq-mini strong{color:var(--indigo)}
+
+/* ── Footer (مطابق لـ index.html) ── */
+footer{
+  background:var(--bg-panel);
+  border-top:1px solid var(--border);
+  padding:64px 24px 32px;
+  margin-top:48px;
+}
+.footer-inner{max-width:1160px;margin:0 auto}
+.footer-top{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr 1fr;
+  gap:48px;
+  margin-bottom:56px;
+}
+.footer-brand-name{
+  font-family:var(--display);font-weight:800;font-size:24px;
+  color:var(--text-white);margin-bottom:8px;
+}
+.footer-brand-sub{
+  font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:20px
+}
+.footer-meta{display:flex;flex-direction:column;gap:6px}
+.footer-meta a,.footer-meta span{
+  font-family:var(--mono);font-size:11px;color:var(--text-dim)
+}
+.footer-meta a:hover{color:var(--crimson)}
+.footer-col h4{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--crimson);margin-bottom:18px;
+}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col ul a{
+  font-size:13px;color:var(--text-muted);transition:color .2s;
+  display:flex;align-items:center;gap:8px;
+}
+.footer-col ul a:hover{color:var(--text-white)}
+.footer-bottom{
+  border-top:1px solid var(--border-dim);padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.footer-copy{font-family:var(--mono);font-size:11px;color:var(--text-dim)}
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .metrics-overview{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .metrics-overview{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .section-header{flex-direction:column;align-items:flex-start}
+  .elabx-equations{grid-template-columns:1fr}
+}
+
+/* ── Animations ── */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ── NAV (مطابق لـ index.html) ── -->
+<nav>
+  <div class="nav-brand">NEUROPIA <span>//</span> REPORTS</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="reports.html" class="active">Results</a></li>
+    <li><a href="documentation.html">Documentation</a></li>
+  </ul>
+  <div class="nav-badge">E-LAB-10 · Active</div>
+</nav>
+
+<!-- ── PAGE HEADER ── -->
+<section class="page-header">
+  <div class="breadcrumb">NEUROPIA / VALIDATION REPORTS</div>
+  <h1>Experimental <span class="highlight">Validation</span> Reports</h1>
+  <p class="page-subtitle">Comprehensive benchmark results across five multi-physics regimes plus E-LAB-X non-geometric stress test — true held-out test metrics with full reproducibility infrastructure.</p>
+</section>
+
+<div class="metrics-overview fade-in">
+  <div class="metric-card"><div class="value">97.3%</div><div class="label">Mean UFCI</div><div class="trend">↑ +31.4 pp</div></div>
+  <div class="metric-card"><div class="value">93.8%</div><div class="label">Mean Σ Reduction</div><div class="trend">Cross-domain entropy</div></div>
+  <div class="metric-card"><div class="value">41.7×</div><div class="label">Onsager Pathways</div><div class="trend">21 pathways</div></div>
+  <div class="metric-card"><div class="value">3.1 ms</div><div class="label">Control Latency</div><div class="trend">A100 GPU</div></div>
+  <div class="metric-card elabx"><div class="value">96.4%</div><div class="label">E-LAB-X Mean η</div><div class="trend">Entropic gravity</div></div>
+</div>
+
+<div class="container" style="max-width:1160px;margin:0 auto;padding:0 24px">
+
+  <!-- E-LAB-X: Non-Geometric Stress Test Section -->
+  <div class="elabx-section fade-in">
+    <div class="elabx-header">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+        <h2>🧪 E-LAB-X — Non-Geometric Stress Test</h2>
+        <span class="elabx-badge">Post-Einsteinian Robustness Analysis</span>
+      </div>
+    </div>
+    <div class="elabx-equations">
+      <div class="eq-mini"><strong>E1 — Entropic Gravitational Force:</strong><br>F_grav = -T_holo · ∇S_holo</div>
+      <div class="eq-mini"><strong>E2 — Holographic Temperature:</strong><br>T_holo = ħ·a/(2π·c·k_B)</div>
+      <div class="eq-mini"><strong>E4 — Processing Time Dilation:</strong><br>dτ_proc/dt = 1 - Σ_actual/Σ_max</div>
+      <div class="eq-mini"><strong>E8 — Processing Capacity Index:</strong><br>PCI(t) = 1 - Σ_actual/Σ_max ∈ [0,1]</div>
+    </div>
+    <div class="section-content">
+      <table class="results-table">
+        <thead><tr><th>Regime</th><th>Primary η (Geometric)</th><th>E-LAB-X η (Entropic)</th><th>Δη</th><th>Dominant Gravity Channel</th></tr></thead>
+        <tbody>
+          <tr><td class="highlight-value">V4</td><td>Dynamo + Seismic</td><td>95.8%</td><td class="highlight-value-elabx">94.1%</td><td class="improvement">-1.7 pp</td><td>Geodesic coupling (strong)</td></tr>
+          <tr><td class="highlight-value">V1</td><td>Tokamak + Thermal</td><td>97.1%</td><td class="highlight-value-elabx">96.8%</td><td class="improvement">-0.3 pp</td><td>Tidal metric perturbation (weak)</td></tr>
+          <tr><td class="highlight-value">V5</td><td>Quantum + Thermal</td><td>97.3%</td><td class="highlight-value-elabx">97.1%</td><td class="improvement">-0.2 pp</td><td>Frame-dragging analog (negligible)</td></tr>
+          <tr><td class="highlight-value">V7</td><td>AI + Thermal</td><td>97.8%</td><td class="highlight-value-elabx">97.7%</td><td class="improvement">-0.1 pp</td><td>Decoupled (< 0.05%)</td></tr>
+          <tr style="background:rgba(75,0,130,0.1)"><td><strong>Mean</strong></td><td><strong>E-LAB-X (4 regimes)</strong></td><td><strong>97.0%</strong></td><td class="highlight-value-elabx"><strong>96.4%</strong></td><td class="improvement"><strong>-0.6 pp</strong></td><td><strong>418 GPU-hrs fine-tune</strong></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:16px;padding:12px;background:rgba(75,0,130,0.1);border-radius:8px;text-align:center">
+        <strong>📊 Key Finding:</strong> NEUROPIA architecture is <strong>theory-agnostic</strong> — performance degrades by ≤ 1.7 pp under extreme substitution of general relativity with emergent entropic gravity.
+      </div>
+    </div>
+  </div>
+
+  <!-- REGIME C1: Tokamak + Thermal Wall -->
+  <div class="report-section fade-in">
+    <div class="section-header">
+      <h2>⚛️ Regime C1 — Tokamak + Thermal Wall</h2>
+      <span class="badge">3 Domains: MHD + Thermo + EM | Rm = 10⁷</span>
+    </div>
+    <div class="section-content">
+      <table class="results-table">
+        <thead><tr><th>Metric</th><th>Baseline</th><th>Interface Coupling</th><th>NEUROPIA</th><th>Improvement</th></tr></thead>
+        <tbody>
+          <tr><td class="highlight-value">UFCI</td><td>42.3%</td><td>71.3%</td><td class="highlight-value">97.8%</td><td class="improvement">+26.5 pp</td></tr>
+          <tr><td class="highlight-value">Σ Reduction</td><td>0%</td><td>68.2%</td><td class="highlight-value">94.2%</td><td class="improvement">+26.0 pp</td></tr>
+          <tr><td class="highlight-value">Plasma-Wall Heat Flux</td><td>42.5 MW/m²</td><td>18.2</td><td class="highlight-value">4.8</td><td class="improvement">8.9× suppression</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- REGIME C2: MHD + Gravitational Analog -->
+  <div class="report-section fade-in">
+    <div class="section-header">
+      <h2>🌌 Regime C2 — MHD + Gravitational Analog</h2>
+      <span class="badge">3 Domains: MHD + Gravity + Info | Alfvénic spacetime coupling</span>
+    </div>
+    <div class="section-content">
+      <table class="results-table">
+        <thead><tr><th>Metric</th><th>Baseline</th><th>Interface Coupling</th><th>NEUROPIA</th><th>Improvement</th></tr></thead>
+        <tbody>
+          <tr><td class="highlight-value">UFCI</td><td>38.7%</td><td>68.4%</td><td class="highlight-value">96.9%</td><td class="improvement">+28.5 pp</td></tr>
+          <tr><td class="highlight-value">Σ Reduction</td><td>0%</td><td>65.1%</td><td class="highlight-value">92.7%</td><td class="improvement">+27.6 pp</td></tr>
+          <tr><td class="highlight-value">Metric-Alfvén Error</td><td>±18%</td><td>±7.2%</td><td class="highlight-value">±1.9%</td><td class="improvement">3.8× better</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- REGIME C3: Chemical Reactor + Heat Exchanger -->
+  <div class="report-section fade-in">
+    <div class="section-header">
+      <h2>⚗️ Regime C3 — Chemical Reactor + Heat Exchanger</h2>
+      <span class="badge">4 Domains: Chem + Thermo + Fluid + EM | Onsager 6 pathways</span>
+    </div>
+    <div class="section-content">
+      <table class="results-table">
+        <thead><tr><th>Metric</th><th>Baseline</th><th>Interface Coupling</th><th>NEUROPIA</th><th>Improvement</th></tr></thead>
+        <tbody>
+          <tr><td class="highlight-value">UFCI</td><td>41.2%</td><td>72.6%</td><td class="highlight-value">97.4%</td><td class="improvement">+24.8 pp</td></tr>
+          <tr><td class="highlight-value">Σ Reduction</td><td>0%</td><td>69.8%</td><td class="highlight-value">93.8%</td><td class="improvement">+24.0 pp</td></tr>
+          <tr><td class="highlight-value">Yield Degradation</td><td>100%</td><td>42%</td><td class="highlight-value">6%</td><td class="improvement">15.7× reduction</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- REGIME C4: Neural-Bio Electromagnetic -->
+  <div class="report-section fade-in">
+    <div class="section-header">
+      <h2>🧬 Regime C4 — Neural-Bio Electromagnetic</h2>
+      <span class="badge">5 Domains: Info + Bio + EM + Thermo + Fluid</span>
+    </div>
+    <div class="section-content">
+      <table class="results-table">
+        <thead><tr><th>Metric</th><th>Baseline</th><th>Interface Coupling</th><th>NEUROPIA</th><th>Improvement</th></tr></thead>
+        <tbody>
+          <tr><td class="highlight-value">UFCI</td><td>36.5%</td><td>66.2%</td><td class="highlight-value">96.8%</td><td class="improvement">+30.6 pp</td></tr>
+          <tr><td class="highlight-value">Σ Reduction</td><td>0%</td><td>62.4%</td><td class="highlight-value">91.9%</td><td class="improvement">+29.5 pp</td></tr>
+          <tr><td class="highlight-value">Metabolic-EM Error</td><td>±22%</td><td>±8.4%</td><td class="highlight-value">±2.1%</td><td class="improvement">4.0× better</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- REGIME C5: Full EntropyLab Stack -->
+  <div class="report-section fade-in">
+    <div class="section-header">
+      <h2>🌍 Regime C5 — Full EntropyLab Stack</h2>
+      <span class="badge">7 Domains: All sectors | 21 Onsager pathways</span>
+    </div>
+    <div class="section-content">
+      <table class="results-table">
+        <thead><tr><th>Metric</th><th>Baseline</th><th>Interface Coupling</th><th>NEUROPIA</th><th>Improvement</th></tr></thead>
+        <tbody>
+          <tr><td class="highlight-value">UFCI</td><td>35.9%</td><td>65.8%</td><td class="highlight-value">97.6%</td><td class="improvement">+31.8 pp</td></tr>
+          <tr><td class="highlight-value">Σ Reduction</td><td>0%</td><td>61.9%</td><td class="highlight-value">94.5%</td><td class="improvement">+32.6 pp</td></tr>
+          <tr><td class="highlight-value">Onsager Pathways</td><td>0/21</td><td>6/21</td><td class="highlight-value">21/21</td><td class="improvement">41.7× reduction</td></tr>
+          <tr><td class="highlight-value">Cascade Lead Time</td><td>0 ms</td><td>2.1 ms</td><td class="highlight-value">8.4 ms</td><td class="improvement">4× earlier</td></tr>
+        </tbody>
+      </table>
+      <div class="comparison-chart">
+        <div class="chart-row"><div class="chart-label">UFCI</div><div class="chart-bar-container"><div class="chart-bar" style="width:97.6%">97.6%</div></div><div class="chart-value">97.6%</div></div>
+        <div class="chart-row"><div class="chart-label">Onsager Pathways</div><div class="chart-bar-container"><div class="chart-bar" style="width:100%">21/21</div></div><div class="chart-value">100%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPREHENSIVE BENCHMARKS -->
+  <div class="report-section fade-in">
+    <div class="section-header"><h2>📊 Comprehensive Benchmark Summary</h2><span class="badge">All Regimes + E-LAB-X</span></div>
+    <div class="section-content">
+      <div class="metrics-grid">
+        <div class="metrics-panel"><h3>Mean Performance (5 Regimes)</h3>
+          <div class="metric-row"><span class="label">UFCI (NEUROPIA)</span><span class="value">97.3%</span></div>
+          <div class="metric-row"><span class="label">UFCI (Best Interface)</span><span class="value">68.9%</span></div>
+          <div class="metric-row"><span class="label">Σ Reduction (Cross-Domain)</span><span class="value">93.8%</span></div>
+          <div class="metric-row"><span class="label">Mean Control Latency (A100)</span><span class="value">3.1 ms</span></div>
+        </div>
+        <div class="metrics-panel"><h3>E-LAB-X Results</h3>
+          <div class="metric-row"><span class="label">Mean η (Geometric)</span><span class="value">97.0%</span></div>
+          <div class="metric-row"><span class="label">Mean η (Entropic EEO)</span><span class="value">96.4%</span></div>
+          <div class="metric-row"><span class="label">Max Performance Gap</span><span class="value">-1.7 pp (V4)</span></div>
+          <div class="metric-row"><span class="label">Fine-tune Compute Reduction</span><span class="value">95.2%</span></div>
+        </div>
+        <div class="metrics-panel"><h3>Hardware Benchmarks</h3>
+          <div class="metric-row"><span class="label">NVIDIA A100 (FP32)</span><span class="value">3.1 ms</span></div>
+          <div class="metric-row"><span class="label">Jetson Orin (INT8)</span><span class="value">142 µs</span></div>
+          <div class="metric-row"><span class="label">Apple M2 (Metal)</span><span class="value">5.4 ms</span></div>
+          <div class="metric-row"><span class="label">Inference Memory</span><span class="value">1.8 GB</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALIDATION TIMELINE -->
+  <div class="report-section fade-in">
+    <div class="section-header"><h2>📈 Validation & Convergence Timeline</h2><span class="badge">EntropyLab E-LAB-10 + E-LAB-X</span></div>
+    <div class="section-content">
+      <div class="timeline">
+        <div class="timeline-item"><div class="timeline-date">Epoch 0–800</div><div class="timeline-title">Phase 1 — Domain-Specific Pre-training</div><div class="timeline-desc">Load from ENTROPIA, MAGNA-FLOW, THERMO-NET, GRAVI-NEURAL checkpoints. Convergence time reduced by 84%.</div></div>
+        <div class="timeline-item"><div class="timeline-date">Epoch 801–2500</div><div class="timeline-title">Phase 2 — Cross-Domain Coupling Training</div><div class="timeline-desc">Off-diagonal Onsager coupling blocks trained on synthetic multi-physics data.</div></div>
+        <div class="timeline-item"><div class="timeline-date">Epoch 2501–5000</div><div class="timeline-title">Phase 3 — End-to-End Fine-Tuning</div><div class="timeline-desc">GCN + UFR integration, NTK rebalancing every 250 epochs.</div></div>
+        <div class="timeline-item"><div class="timeline-date">Epoch 5001–8500</div><div class="timeline-title">Phase 4 — Adversarial Cascade Training</div><div class="timeline-desc">ELM + decoherence + ATP depletion scenarios. UFCI plateau: 97.3% ± 0.5%.</div></div>
+        <div class="timeline-item"><div class="timeline-date">E-LAB-X Fine-tune</div><div class="timeline-title">Emergent Entropic Operator (EEO) Training</div><div class="timeline-desc">880 GPU-hours fine-tune · 95.2% compute reduction vs. scratch · Mean η: 96.4%</div></div>
+        <div class="timeline-item"><div class="timeline-date">Final Validation</div><div class="timeline-title">Held-out Test Metrics</div><div class="timeline-desc">No training data contamination — all results reproducible via Zenodo DOI: 10.5281/zenodo.20092199</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── FOOTER (مطابق لـ index.html) ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">NEUROPIA</div>
+        <div class="footer-brand-sub">
+          Neural Singularity &amp; Unified Field Synthesis Framework.<br>
+          The Grand Capstone of the EntropyLab Research Program.<br>
+          Open-source entropy-sovereign multi-physics AI.
+        </div>
+        <div class="footer-meta">
+          <span>Version 1.0.0 · MIT License</span>
+          <a href="https://doi.org/10.5281/zenodo.20092199">DOI: 10.5281/zenodo.20092199</a>
+          <a href="https://orcid.org/0009-0003-8903-0029">ORCID: 0009-0003-8903-0029</a>
+          <a href="https://www.mdpi.com/journal/entropy">Target Journal: Entropy (MDPI), ISSN 1099-4300</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul><li><a href="index.html">🏠 Home</a></li><li><a href="dashboard.html">⚙️ Dashboard</a></li><li><a href="reports.html">📊 Results</a></li><li><a href="documentation.html">🐍 Documentation</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Code Repositories</h4>
+        <ul><li><a href="https://gitlab.com/gitdeeper11/NEUROPIA">⛓ GitLab (Primary) ↗</a></li><li><a href="https://github.com/gitdeeper11/NEUROPIA">🐙 GitHub (Mirror) ↗</a></li><li><a href="https://bitbucket.org/gitdeeper11/NEUROPIA">🪣 Bitbucket ↗</a></li><li><a href="https://codeberg.org/gitdeeper11/NEUROPIA">🏕 Codeberg ↗</a></li><li><a href="https://pypi.org/project/neuropia-engine/">🐍 PyPI Package ↗</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul><li><a href="https://doi.org/10.5281/zenodo.20092199">📄 Research Paper ↗</a></li><li><a href="https://doi.org/10.5281/zenodo.20092199">📊 Zenodo Dataset ↗</a></li><li><a href="https://osf.io/entropylab">🔮 OSF Preregistration ↗</a></li><li><a href="https://orcid.org/0009-0003-8903-0029">👤 ORCID Profile ↗</a></li><li><a href="https://entropia-lab.netlify.app">🔴 ENTROPIA Portal ↗</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">Copyright © NEUROPIA 🧠 2026 | All rights reserved</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

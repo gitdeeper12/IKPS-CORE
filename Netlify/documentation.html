@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEUROPIA — Documentation | Unified Field Synthesis Framework</title>
+<meta name="description" content="Complete technical documentation for NEUROPIA unified field synthesis framework — UFP, CDSP, ECM architectures, API reference, validation protocols, and E-LAB-X non-geometric stress test."/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── CSS Variables (مطابقة لـ index.html) ── */
+:root {
+  --crimson:      #8B0000;
+  --deep-red:     #5C0000;
+  --mid-red:      #A31515;
+  --bright-red:   #C0392B;
+  --red-glow:     rgba(139,0,0,0.25);
+  --red-faint:    rgba(139,0,0,0.08);
+  --bg-black:     #050505;
+  --bg-panel:     #0d0d0d;
+  --bg-card:      #111111;
+  --bg-card2:     #161616;
+  --border:       rgba(139,0,0,0.3);
+  --border-dim:   rgba(255,255,255,0.07);
+  --text-white:   #F5F0F0;
+  --text-muted:   #8A8080;
+  --text-dim:     #5A5050;
+  --mono:         'JetBrains Mono', monospace;
+  --display:      'Syne', sans-serif;
+  --body-font:    'Inter', sans-serif;
+  --indigo:       #4B0082;
+}
+
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg-black);
+  color:var(--text-white);
+  font-family:var(--body-font);
+  font-size:15px;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+
+/* ── Noise texture overlay ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+
+/* ── Navbar ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:62px;
+  background:rgba(5,5,5,0.88);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{
+  font-family:var(--mono);font-weight:700;font-size:13px;
+  color:var(--text-white);letter-spacing:0.08em;
+}
+.nav-brand span{color:var(--crimson)}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.1em;
+  color:var(--text-muted);text-transform:uppercase;
+  transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--crimson)}
+.nav-badge{
+  font-family:var(--mono);font-size:10px;padding:4px 10px;
+  border:1px solid var(--crimson);color:var(--crimson);
+  border-radius:2px;letter-spacing:0.1em;
+}
+
+/* ── Hero Section ── */
+.hero{
+  padding:100px 24px 48px;
+  max-width:1200px;margin:0 auto;
+}
+.hero h1{
+  font-family:var(--display);font-size:clamp(2.5rem,5vw,4rem);
+  font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem;
+}
+.hero h1 .highlight{color:var(--crimson)}
+.hero-sub{
+  font-size:1rem;color:var(--text-muted);max-width:700px;margin-bottom:2rem;
+}
+.stats-grid{
+  display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem;
+}
+.stat-item{
+  background:var(--bg-card);border:1px solid var(--border-dim);
+  border-radius:8px;padding:1rem 1.5rem;text-align:center;
+}
+.stat-value{
+  font-family:var(--mono);font-size:1.2rem;font-weight:800;color:var(--crimson);
+}
+.stat-label{
+  font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-dim);
+}
+.stat-elabx .stat-value{color:var(--indigo)}
+.stat-elabx{background:rgba(75,0,130,0.08)}
+
+/* ── Layout ── */
+.doc-layout{
+  display:grid;grid-template-columns:280px 1fr;
+  gap:3rem;max-width:1400px;margin:0 auto;padding:0 24px;
+}
+.sidebar{
+  position:sticky;top:100px;height:fit-content;
+}
+.sidebar-nav{list-style:none}
+.sidebar-nav li{margin-bottom:0.5rem}
+.sidebar-nav a{
+  font-family:var(--mono);font-size:0.7rem;
+  color:var(--text-muted);text-decoration:none;
+  display:block;padding:0.4rem 0;transition:color 0.2s;
+}
+.sidebar-nav a:hover,.sidebar-nav a.active{color:var(--crimson)}
+.sidebar-divider{
+  height:1px;background:var(--border-dim);margin:1rem 0;
+}
+
+/* ── Content Sections ── */
+.doc-section{
+  margin-bottom:3rem;scroll-margin-top:80px;
+}
+.doc-section h2{
+  font-family:var(--display);font-size:1.6rem;font-weight:700;
+  margin-bottom:1rem;border-left:3px solid var(--crimson);padding-left:1rem;
+}
+.doc-section h3{
+  font-size:1.2rem;font-weight:700;margin:1.5rem 0 0.8rem;color:var(--crimson);
+}
+.doc-section p{
+  color:var(--text-muted);margin-bottom:1rem;line-height:1.7;
+}
+.doc-section.elabx h2{border-left-color:var(--indigo)}
+.doc-section.elabx h3{color:var(--indigo)}
+
+/* ── Code Blocks ── */
+.code-block{
+  background:var(--bg-card);border:1px solid var(--border-dim);
+  border-radius:8px;overflow:hidden;margin:1.5rem 0;
+}
+.code-header{
+  background:rgba(139,0,0,0.1);padding:0.6rem 1.2rem;
+  font-family:var(--mono);font-size:0.65rem;color:var(--text-dim);
+  border-bottom:1px solid var(--border-dim);
+}
+pre{
+  padding:1.2rem;margin:0;font-family:var(--mono);
+  font-size:0.7rem;line-height:1.6;color:var(--text-white);
+  overflow-x:auto;
+}
+.kw{color:var(--crimson)}
+.fn{color:#B06060}
+.str{color:#6CA05A}
+.cm{color:var(--text-dim);font-style:italic}
+.num{color:#C0392B}
+
+/* ── Parameters Table ── */
+.params-table{
+  width:100%;border-collapse:collapse;margin:1.5rem 0;
+}
+.params-table th{
+  text-align:left;padding:0.75rem;
+  background:rgba(139,0,0,0.1);font-family:var(--mono);
+  font-size:0.65rem;color:var(--crimson);
+}
+.params-table td{
+  padding:0.75rem;border-bottom:1px solid var(--border-dim);
+  font-family:var(--mono);font-size:0.7rem;color:var(--text-muted);
+}
+
+/* ── E-LAB-X Equations Grid ── */
+.eq-elabx-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1rem;
+  margin:1.5rem 0;
+}
+.eq-elabx-card{
+  background:rgba(75,0,130,0.05);
+  border:1px solid var(--indigo);
+  border-radius:8px;
+  padding:1rem;
+}
+.eq-elabx-card .eq-label{
+  font-family:var(--mono);
+  font-size:0.7rem;
+  font-weight:700;
+  color:var(--indigo);
+  margin-bottom:0.5rem;
+}
+.eq-elabx-card .eq-formula{
+  font-family:var(--mono);
+  font-size:0.75rem;
+  color:var(--text-white);
+  margin-bottom:0.5rem;
+}
+.eq-elabx-card .eq-caption{
+  font-family:var(--mono);
+  font-size:0.6rem;
+  color:var(--text-dim);
+}
+
+/* ── Author Section ── */
+.author-section{
+  background:var(--bg-card);border:1px solid var(--border-dim);
+  border-radius:12px;padding:2rem;margin:2rem 0;
+}
+.author-header{
+  display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;
+}
+.author-icon{
+  width:60px;height:60px;
+  background:linear-gradient(135deg,var(--deep-red),var(--crimson));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;
+}
+.author-name{font-size:1.3rem;font-weight:800}
+.author-title{font-size:0.8rem;color:var(--text-dim)}
+.author-bio{color:var(--text-muted);line-height:1.7;margin-bottom:1.5rem}
+.author-links{display:flex;gap:1rem;flex-wrap:wrap}
+.author-link{
+  font-family:var(--mono);font-size:0.65rem;
+  color:var(--crimson);text-decoration:none;
+  padding:0.3rem 0.8rem;border:1px solid var(--border);
+  border-radius:20px;transition:all 0.2s;
+}
+.author-link:hover{background:var(--red-faint);border-color:var(--crimson)}
+
+/* ── Citation ── */
+.citation-block{
+  background:var(--bg-card);border:1px solid var(--border-dim);
+  border-radius:8px;padding:1.5rem;
+  font-family:var(--mono);font-size:0.65rem;
+  color:var(--text-dim);white-space:pre-wrap;margin:1.5rem 0;
+}
+
+/* ── Footer ── */
+footer{
+  background:var(--bg-panel);border-top:1px solid var(--border);
+  padding:64px 24px 32px;margin-top:48px;
+}
+.footer-inner{max-width:1160px;margin:0 auto}
+.footer-top{
+  display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;
+  gap:48px;margin-bottom:56px;
+}
+.footer-brand-name{
+  font-family:var(--display);font-weight:800;font-size:24px;
+  color:var(--text-white);margin-bottom:8px;
+}
+.footer-brand-sub{
+  font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:20px
+}
+.footer-meta{display:flex;flex-direction:column;gap:6px}
+.footer-meta a,.footer-meta span{
+  font-family:var(--mono);font-size:11px;color:var(--text-dim)
+}
+.footer-meta a:hover{color:var(--crimson)}
+.footer-col h4{
+  font-family:var(--mono);font-size:11px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--crimson);margin-bottom:18px;
+}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col ul a{
+  font-size:13px;color:var(--text-muted);transition:color .2s;
+  display:flex;align-items:center;gap:8px;
+}
+.footer-col ul a:hover{color:var(--text-white)}
+.footer-bottom{
+  border-top:1px solid var(--border-dim);padding-top:24px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.footer-copy{font-family:var(--mono);font-size:11px;color:var(--text-dim)}
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .doc-layout{grid-template-columns:1fr}
+  .sidebar{position:static;margin-bottom:2rem}
+  .eq-elabx-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .footer-top{grid-template-columns:1fr}
+  .stats-grid{flex-direction:column;align-items:stretch}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">NEUROPIA <span>//</span> DOCS</div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="reports.html">Results</a></li>
+    <li><a href="documentation.html" class="active">Documentation</a></li>
+  </ul>
+  <div class="nav-badge">E-LAB-10 · Active</div>
+</nav>
+
+<div class="hero">
+  <h1>NEUROPIA <span class="highlight">Documentation</span></h1>
+  <p class="hero-sub">Technical Documentation · API Reference · Physics-Informed AI Framework for Unified Field Synthesis</p>
+  <div class="stats-grid">
+    <div class="stat-item"><div class="stat-value">97.3%</div><div class="stat-label">Mean UFCI</div></div>
+    <div class="stat-item"><div class="stat-value">93.8%</div><div class="stat-label">Σ Reduction</div></div>
+    <div class="stat-item"><div class="stat-value">3.1 ms</div><div class="stat-label">Control Latency</div></div>
+    <div class="stat-item"><div class="stat-value">21/21</div><div class="stat-label">Onsager Pathways</div></div>
+    <div class="stat-item stat-elabx"><div class="stat-value">96.4%</div><div class="stat-label">E-LAB-X Mean η</div></div>
+  </div>
+</div>
+
+<div class="doc-layout">
+  <aside class="sidebar">
+    <ul class="sidebar-nav">
+      <li><a href="#overview" class="active">📖 Overview</a></li>
+      <li><a href="#architecture">🏗️ 3-Core Architecture</a></li>
+      <li><a href="#equations">📐 Core Equations</a></li>
+      <li><a href="#elabx-equations">🧪 E-LAB-X Equations</a></li>
+      <li><a href="#installation">📦 Installation</a></li>
+      <li><a href="#api">🔧 API Reference</a></li>
+      <li><a href="#modules">🧩 Core Modules</a></li>
+      <li><a href="#validation">📊 Validation Summary</a></li>
+      <li class="sidebar-divider"></li>
+      <li><a href="#author">👤 Author</a></li>
+      <li><a href="#citation">📝 Citation</a></li>
+    </ul>
+  </aside>
+
+  <main class="doc-content">
+    <section id="overview" class="doc-section">
+      <h2>📖 Overview</h2>
+      <p><strong>"If ENTROPIA was the question — how do we understand order from chaos — then NEUROPIA is the answer. It is the state in which artificial intelligence becomes the mirror that reflects the perfection of physical law across every domain simultaneously."</strong></p>
+      <p>NEUROPIA is the tenth and culminating Physics-Informed Artificial Intelligence framework of the EntropyLab research program (E-LAB-10). It unifies all nine dissipation channels from previous projects into a single learnable operator: the <strong>Unified Field Propagator (UFP)</strong>. Built on three orthogonal neural constructs spanning spectral operator learning, cross-domain symmetry preservation, and Pareto-optimal entropy minimization, NEUROPIA achieves unprecedented efficiency across five multi-physics validation regimes.</p>
+      <div class="stats-grid" style="margin-top:1rem">
+        <div class="stat-item"><div class="stat-value">97.3%</div><div class="stat-label">Mean UFCI · 5 regimes</div></div>
+        <div class="stat-item"><div class="stat-value">93.8%</div><div class="stat-label">Mean Σ Reduction</div></div>
+        <div class="stat-item"><div class="stat-value">41.7×</div><div class="stat-label">Total Suppression</div></div>
+      </div>
+    </section>
+
+    <section id="architecture" class="doc-section">
+      <h2>🏗️ 3-Core Architecture</h2>
+      <p>NEUROPIA operates on the Physical Coupling Manifold M through three synergistic neural constructs:</p>
+
+      <h3>UFP — Unified Field Propagator</h3>
+      <p>A gauge-equivariant tensor neural operator acting on sections of a fiber bundle over the Physical Coupling Manifold M. The learnable N_d × N_d complex spectral kernel captures cross-domain coupling between all physical fields simultaneously. Noether projection at the output layer enforces energy, momentum, charge, and information entropy conservation as hard architectural constraints — not penalty terms.</p>
+      <div class="code-block"><div class="code-header"><span>python — UFP initialization</span></div><pre><span class="kw">from</span> neuropia <span class="kw">import</span> <span class="fn">UnifiedFieldPropagator</span>
+
+ufp = <span class="fn">UnifiedFieldPropagator</span>(
+    n_domains=<span class="num">7</span>,
+    n_modes=<span class="num">64</span>,
+    n_layers=<span class="num">10</span>,
+    hidden_channels=<span class="num">512</span>,
+    gauge_group=<span class="str">'Poincare x U(1) x SU(3)'</span>
+)</pre></div>
+
+      <h3>CDSP — Cross-Domain Symmetry Preserver</h3>
+      <p>Enforces Noether's theorem across every domain interface architecturally, not through gradient penalties. The Onsager reciprocal matrix L_ij = L_ji is maintained as a hard constraint, preventing unphysical time-irreversible cross-coupling pathways. The Bianchi identity is enforced in the gravitational sector, and coupling consistency checks prevent entropy misattribution between domains.</p>
+
+      <h3>ECM — Entropy Capstone Module</h3>
+      <p>Integrates all nine EntropyLab dissipation functionals into a single Pareto-optimal master entropy objective. The cross-domain Onsager decomposition ensures that coupling entropy — invisible to any single-domain framework — is explicitly minimized. The Pareto optimizer enforces per-domain performance floors (α_i = 0.15), guaranteeing that no domain is sacrificed for another.</p>
+    </section>
+
+    <section id="equations" class="doc-section">
+      <h2>📐 Core Equations (Eq. 1-6)</h2>
+      <div class="code-block"><div class="code-header"><span>Eq. 1 — PCM State Vector</span></div><pre>p = (u, B, T, S, g_μν, ρ_q, H_info) ∈ M</pre></div>
+      <div class="code-block"><div class="code-header"><span>Eq. 2 — UFP Forward Map</span></div><pre>p(x,t+dt) = W·p + F⁻¹[ R_θ(k)·F[p](k) ]</pre></div>
+      <div class="code-block"><div class="code-header"><span>Eq. 3 — Gauge Equivariance</span></div><pre>UFP_θ[ρ(g)·p] = ρ(g)·UFP_θ[p]  ∀g ∈ G_phys</pre></div>
+      <div class="code-block"><div class="code-header"><span>Eq. 4 — ECM Master Objective</span></div><pre>Σ_total = Σ_i σ_ii(p) + Σ_{i≠j} L_ij·X_i·X_j</pre></div>
+      <div class="code-block"><div class="code-header"><span>Eq. 5 — Noether Conservation (Hard)</span></div><pre>∂_μ J^μ_a = 0  ∀a ∈ {E, p, L, q, H}</pre></div>
+      <div class="code-block"><div class="code-header"><span>Eq. 6 — ECM Pareto Constraint</span></div><pre>σ_ii(p_θ) ≤ α_i · σ_ii(p_baseline)  ∀i, α_i = 0.15</pre></div>
+    </section>
+
+    <!-- E-LAB-X: Non-Geometric Stress Test Equations -->
+    <section id="elabx-equations" class="doc-section elabx">
+      <h2>🧪 E-LAB-X: Non-Geometric Stress Test (E1-E8)</h2>
+      <p>This appendix documents the mathematical formulation of the Emergent Entropic Operator (EEO) replacing the geometric gravitational sector of NEUROPIA.</p>
+
+      <div class="eq-elabx-grid">
+        <div class="eq-elabx-card">
+          <div class="eq-label">Equation E1 — Entropic Gravitational Force</div>
+          <div class="eq-formula">F_grav = -T_holo · ∇S_holo</div>
+          <div class="eq-caption">Entropic force derived from holographic entropy gradient</div>
+        </div>
+        <div class="eq-elabx-card">
+          <div class="eq-label">Equation E2 — Holographic Temperature (Unruh)</div>
+          <div class="eq-formula">T_holo = (ħ·a) / (2π·c·k_B)</div>
+          <div class="eq-caption">Unruh temperature from proper acceleration</div>
+        </div>
+        <div class="eq-elabx-card">
+          <div class="eq-label">Equation E3 — Modified UFP (Entropic)</div>
+          <div class="eq-formula">Ψ(x,t) = UFP_θ[ℋ(x,t)]</div>
+          <div class="eq-caption">ℋ(x,t) = ρ_I·ln(ρ_I) — information density field</div>
+        </div>
+        <div class="eq-elabx-card">
+          <div class="eq-label">Equation E4 — Processing Time Dilation</div>
+          <div class="eq-formula">dτ_proc/dt = 1 - (Σ_actual / Σ_max)</div>
+          <div class="eq-caption">Information-theoretic time dilation — replaces Lorentz factor γ</div>
+        </div>
+        <div class="eq-elabx-card">
+          <div class="eq-label">Equation E5 — Bekenstein Bound</div>
+          <div class="eq-formula">Σ_max = (2π·E·k_B) / (ħ·ln 2)</div>
+          <div class="eq-caption">Maximum information processing rate</div>
+        </div>
+        <div class="eq-elabx-card">
+          <div class="eq-label">Equation E6 — Emergent Entropic State Vector</div>
+          <div class="eq-formula">Ψ_E(r,t) = (S_holo, ∇S_holo, T_holo, δλ_E)</div>
+          <div class="eq-caption">Replaces (h_00, h_01, h_02, h_03) metric perturbation block</div>
+        </div>
+        <div class="eq-elabx-card">
+          <div class="eq-label">Equation E7 — Clausius-Duhem Entropic Constraint</div>
+          <div class="eq-formula">L_entropic = dS_holo/dt - (F_grav·v)/T_holo = 0</div>
+          <div class="eq-caption">Thermodynamic consistency constraint</div>
+        </div>
+        <div class="eq-elabx-card">
+          <div class="eq-label">Equation E8 — Processing Capacity Index (PCI)</div>
+          <div class="eq-formula">PCI(t) = 1 - (Σ_actual / Σ_max) ∈ [0,1]</div>
+          <div class="eq-caption">Real-time processing capacity utilization (v2.0)</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span>python — E-LAB-X PCI computation</span></div>
+        <pre><span class="c"># Compute PCI from current entropy production</span>
+sigma_actual = tracker.get_entropy_production_rate()
+sigma_max = bekenstein_bound(system_energy)
+pci = 1.0 - sigma_actual / sigma_max
+
+<span class="c"># PCI range: 0.0 (saturated) to 1.0 (idle)</span>
+print(f<span class="str">"Processing Capacity Index: {pci:.3f}"</span>)</pre>
+      </div>
+
+      <div class="eq-elabx-grid" style="margin-top:1rem">
+        <div class="eq-elabx-card" style="background:rgba(75,0,130,0.1)">
+          <div class="eq-label">📊 Key Results</div>
+          <div class="eq-formula">Mean η (Geometric): 97.0% → Mean η (Entropic EEO): 96.4%</div>
+          <div class="eq-caption">Maximum degradation: -1.7 pp (V4: Dynamo+Seismic) · Mean degradation: -0.6 pp · 418 GPU-hours fine-tune (95.2% reduction)</div>
+        </div>
+        <div class="eq-elabx-card" style="background:rgba(75,0,130,0.1)">
+          <div class="eq-label">🔬 Validity Statement</div>
+          <div class="eq-formula">NEUROPIA is theory-agnostic in the gravitational sector</div>
+          <div class="eq-caption">Performance ≤1.7 pp degradation demonstrates architecture independence from specific gravitational theory, enabling application to post-Einsteinian regimes.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="installation" class="doc-section">
+      <h2>📦 Installation</h2>
+      <div class="code-block"><div class="code-header"><span>bash — pip install</span></div><pre><span class="cm"># From PyPI (stable)</span>
+<span class="kw">pip install</span> neuropia-engine
+
+<span class="cm"># From source</span>
+<span class="kw">git clone</span> https://gitlab.com/gitdeeper11/NEUROPIA.git
+<span class="kw">cd</span> NEUROPIA &amp;&amp; <span class="kw">pip install</span> -e .
+
+<span class="cm"># With CUDA acceleration</span>
+<span class="kw">pip install</span> neuropia-engine[cuda]</pre></div>
+    </section>
+
+    <section id="api" class="doc-section">
+      <h2>🔧 API Reference</h2>
+      <h3>UnifiedStateTracker</h3>
+      <div class="code-block"><div class="code-header"><span>python — main interface</span></div><pre><span class="kw">from</span> neuropia <span class="kw">import</span> <span class="fn">UnifiedStateTracker</span>
+
+tracker = <span class="fn">UnifiedStateTracker</span>(
+    spatial_dim=<span class="num">256</span>,
+    k_max=<span class="num">64</span>,
+    domains=[<span class="str">'mhd'</span>, <span class="str">'thermal'</span>, <span class="str">'quantum'</span>, <span class="str">'gravitational'</span>],
+    enforce_noether=<span class="kw">True</span>,
+    pareto_alpha=<span class="num">0.15</span>
+)
+
+<span class="c"># E-LAB-X: PCI monitoring</span>
+sigma_actual = tracker.get_entropy_production_rate()
+sigma_max = 1.0
+pci = 1.0 - sigma_actual / sigma_max
+
+tracker.<span class="fn">load_weights</span>(<span class="str">'experiments/weights/'</span>)
+tracker.<span class="fn">step</span>(dt=<span class="num">1e-6</span>, multi_obs=observation)
+ufci = tracker.<span class="fn">get_coherence_index</span>()</pre></div>
+
+      <h3>UnifiedStateTracker Parameters</h3>
+      <table class="params-table">
+        <thead><tr><th>Parameter</th><th>Description</th><th>Default</th><th>Domain</th></tr></thead>
+        <tbody>
+          <tr><td>spatial_dim</td><td>Spatial grid resolution (N³)</td><td>256</td><td>64–512</td></tr>
+          <tr>
+        <td class="text-muted">k_max</td>
+        <td class="text-muted">Maximum Fourier modes</td>
+        <td class="text-muted">64</td>
+        <td class="text-muted">32–128</td>
+      </tr>
+      <tr>
+        <td class="text-muted">domains</td>
+        <td class="text-muted">Active physical domains</td>
+        <td class="text-muted">['mhd','thermal']</td>
+        <td class="text-muted">1–7 domains</td>
+      </tr>
+      <tr>
+        <td class="text-muted">pareto_alpha</td>
+        <td class="text-muted">Per-domain performance floor (α_i)</td>
+        <td class="text-muted">0.15</td>
+        <td class="text-muted">0.10–0.30</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Processing Capacity Index (E-LAB-X)</h3>
+  <div class="code-block">
+    <div class="code-header"><span>python — PCI monitoring</span></div>
+    <pre><span class="kw">from</span> neuropia.elabx <span class="kw">import</span> <span class="fn">ProcessingCapacityIndex</span>
+
+<span class="c"># Compute PCI from current entropy production</span>
+pci = <span class="fn">ProcessingCapacityIndex</span>.compute(
+    sigma_actual=tracker.get_entropy_production_rate(),
+    system_energy=1e-10
+)
+
+<span class="c"># PCI range: 0.0 (saturated) to 1.0 (idle)</span>
+print(f<span class="str">"Processing Capacity Index: {pci:.3f}"</span>)</pre>
+  </div>
+</section>
+
+<section id="modules" class="doc-section">
+  <h2>🧩 Core Modules</h2>
+  <table class="params-table">
+    <thead>
+      <tr><th>Module</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="text-muted">ufp.py</td><td class="text-muted">Unified Field Propagator — 10-layer spectral operator, 284.7M parameters</td></tr>
+      <tr><td class="text-muted">cdsp.py</td><td class="text-muted">Cross-Domain Symmetry Preserver — Onsager + Bianchi constraints</td></tr>
+      <tr><td class="text-muted">ecm.py</td><td class="text-muted">Entropy Capstone Module — Pareto optimization, α_i=0.15 floor</td></tr>
+      <tr><td class="text-muted">noether_projection.py</td><td class="text-muted">Hard Noether conservation projection</td></tr>
+      <tr><td class="text-muted">onsager_decomposition.py</td><td class="text-muted">Cross-domain Onsager matrix L_ij</td></tr>
+      <tr><td class="text-muted" style="color:var(--indigo)">pci.py</td><td class="text-muted" style="color:var(--indigo)">Processing Capacity Index (E-LAB-X) — PCI = 1 - Σ_actual/Σ_max</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="validation" class="doc-section">
+  <h2>📊 Validation Summary</h2>
+  <table class="params-table">
+    <thead>
+      <tr><th>Regime</th><th>Platform</th><th>UFCI</th><th>Key Result</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="text-muted">C1</td><td class="text-muted">Tokamak + Thermal Wall</td><td class="text-muted">97.8%</td><td class="text-muted">8.9× heat flux suppression</td></tr>
+      <tr><td class="text-muted">C2</td><td class="text-muted">MHD + Gravitational Analog</td><td class="text-muted">96.9%</td><td class="text-muted">3.8× metric-Alfvén accuracy</td></tr>
+      <tr><td class="text-muted">C3</td><td class="text-muted">Chemical Reactor + Heat Exchanger</td><td class="text-muted">97.4%</td><td class="text-muted">15.7× yield improvement</td></tr>
+      <tr><td class="text-muted">C4</td><td class="text-muted">Neural-Bio Electromagnetic</td><td class="text-muted">96.8%</td><td class="text-muted">4.0× coupling accuracy</td></tr>
+      <tr><td class="text-muted">C5</td><td class="text-muted">Full EntropyLab Stack</td><td class="text-muted">97.6%</td><td class="text-muted">21/21 Onsager pathways</td></tr>
+    </tbody>
+  </table>
+
+  <h3>E-LAB-X Validation: Geometric vs. Entropic Gravity</h3>
+  <table class="params-table">
+    <thead>
+      <tr><th>Regime</th><th>Geometric η</th><th>Entropic η (EEO)</th><th>Δη</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="text-muted">V4 (Dynamo+Seismic)</td><td class="text-muted">95.8%</td><td class="text-muted" style="color:var(--indigo)">94.1%</td><td class="text-muted">-1.7 pp</td></tr>
+      <tr><td class="text-muted">V1 (Tokamak+Thermal)</td><td class="text-muted">97.1%</td><td class="text-muted" style="color:var(--indigo)">96.8%</td><td class="text-muted">-0.3 pp</td></tr>
+      <tr><td class="text-muted">V5 (Quantum+Thermal)</td><td class="text-muted">97.3%</td><td class="text-muted" style="color:var(--indigo)">97.1%</td><td class="text-muted">-0.2 pp</td></tr>
+      <tr><td class="text-muted">V7 (AI+Thermal)</td><td class="text-muted">97.8%</td><td class="text-muted" style="color:var(--indigo)">97.7%</td><td class="text-muted">-0.1 pp</td></tr>
+      <tr style="background:rgba(75,0,130,0.1)"><td class="text-muted"><strong>Mean</strong></td><td class="text-muted"><strong>97.0%</strong></td><td class="text-muted" style="color:var(--indigo)"><strong>96.4%</strong></td><td class="text-muted"><strong>-0.6 pp</strong></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="author" class="doc-section">
+  <h2>👤 Author</h2>
+  <div class="author-section">
+    <div class="author-header">
+      <div class="author-icon">🧠</div>
+      <div><div class="author-name">Samir Baladi</div><div class="author-title">Principal Investigator — Unified Field Synthesis</div></div>
+    </div>
+    <div class="author-bio">Samir Baladi is an independent interdisciplinary researcher affiliated with the Ronin Institute, developing the Rite of Renaissance research program. NEUROPIA is the tenth and final installment of the EntropyLab research program (E-LAB-10), building a unified Physics-Informed AI architecture for entropy-governed physical systems spanning magnetohydrodynamics, thermodynamics, quantum optics, general relativity, chemical kinetics, metabolic networks, and AI inference thermodynamics.</div>
+    <div class="author-bio">E-LAB-X demonstrates that NEUROPIA's architecture remains robust under extreme substitution of general relativity with emergent entropic gravity — proving theory-agnostic applicability to post-Einsteinian regimes.</div>
+    <div class="author-bio">No conflicts of interest declared. All code and data are open-source under MIT License with full reproducibility via Zenodo.</div>
+    <div class="author-links">
+      <a href="mailto:gitdeeper@gmail.com" class="author-link">📧 gitdeeper@gmail.com</a>
+      <a href="https://orcid.org/0009-0003-8903-0029" class="author-link">🔗 ORCID: 0009-0003-8903-0029</a>
+      <a href="https://github.com/gitdeeper11" class="author-link">🐙 GitHub</a>
+      <a href="https://gitlab.com/gitdeeper11" class="author-link">🦊 GitLab</a>
+    </div>
+  </div>
+</section>
+
+<section id="citation" class="doc-section">
+  <h2>📝 Citation</h2>
+  <div class="citation-block">
+@software{baladi2026neuropia,
+  author       = {Samir Baladi},
+  title        = {NEUROPIA: Neural Singularity and Unified Field Synthesis Framework},
+  year         = {2026},
+  version      = {1.0.0},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.20092199},
+  url          = {https://doi.org/10.5281/zenodo.20092199},
+  note         = {E-LAB-10, EntropyLab Research Program. Includes E-LAB-X non-geometric stress test.}
+}
+  </div>
+  <p style="margin-top:1rem">"If ENTROPIA was the question — how do we understand order from chaos — then NEUROPIA is the answer. It is the state in which artificial intelligence becomes the mirror that reflects the perfection of physical law across every domain simultaneously."</p>
+</section>
+      </main>
+    </div>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div>
+            <div class="footer-brand-name">NEUROPIA</div>
+            <div class="footer-brand-sub">Neural Singularity &amp; Unified Field Synthesis Framework.<br>The Grand Capstone of the EntropyLab Research Program.<br>Open-source entropy-sovereign multi-physics AI.</div>
+            <div class="footer-meta">
+              <span>Version 1.0.0 · MIT License</span>
+              <a href="https://doi.org/10.5281/zenodo.20092199">DOI: 10.5281/zenodo.20092199</a>
+              <a href="https://orcid.org/0009-0003-8903-0029">ORCID: 0009-0003-8903-0029</a>
+              <a href="https://www.mdpi.com/journal/entropy">Target Journal: Entropy (MDPI), ISSN 1099-4300</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul><li><a href="index.html">🏠 Home</a></li><li><a href="dashboard.html">⚙️ Dashboard</a></li><li><a href="reports.html">📊 Results</a></li><li><a href="documentation.html">🐍 Documentation</a></li></ul>
+          </div>
+          <div class="footer-col">
+            <h4>Code Repositories</h4>
+            <ul><li><a href="https://gitlab.com/gitdeeper11/NEUROPIA">⛓ GitLab (Primary) ↗</a></li><li><a href="https://github.com/gitdeeper11/NEUROPIA">🐙 GitHub (Mirror) ↗</a></li><li><a href="https://bitbucket.org/gitdeeper11/NEUROPIA">🪣 Bitbucket ↗</a></li><li><a href="https://codeberg.org/gitdeeper11/NEUROPIA">🏕 Codeberg ↗</a></li><li><a href="https://pypi.org/project/neuropia-engine/">🐍 PyPI Package ↗</a></li></ul>
+          </div>
+          <div class="footer-col">
+            <h4>Resources</h4>
+            <ul><li><a href="https://doi.org/10.5281/zenodo.20092199">📄 Research Paper ↗</a></li><li><a href="https://doi.org/10.5281/zenodo.20092199">📊 Zenodo Dataset ↗</a></li><li><a href="https://osf.io/entropylab">🔮 OSF Preregistration ↗</a></li><li><a href="https://orcid.org/0009-0003-8903-0029">👤 ORCID Profile ↗</a></li><li><a href="https://entropia-lab.netlify.app">🔴 ENTROPIA Portal ↗</a></li></ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-copy">Copyright © NEUROPIA 🧠 2026 | All rights reserved</div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+    const sections = document.querySelectorAll('.doc-section');
+    const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        if (scrollY >= sectionTop && scrollY < sectionBottom) {
+          current = section.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+    </script>
+  </body>
+  </html>

@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ikps-core"
+version = "2.1.0"
+description = "DSFT-TD V2.1: Dynamic Semantic Field Theory"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Samir Baladi", email = "gitdeeper@gmail.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.19.0",
+    "scipy>=1.5.0",
+]
+
+[project.urls]
+Homepage = "https://samirbaladi.github.io/ikps-documentation/"
+Repository = "https://github.com/gitdeeper12/IKPS-CORE"
+Zenodo = "https://doi.org/10.5281/zenodo.20303214"
+OSF = "https://osf.io/muwt4"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["tests*", "benchmarks*", "validation*", "scripts*"]

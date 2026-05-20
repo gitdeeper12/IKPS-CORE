@@ -1,0 +1,33 @@
+IKPS v1.0.0
+Internal Knowledge Production System
+Pure Epistemic Projection System
+
+Copyright (c) 2026 Samir Baladi
+Ronin Institute / Rite of Renaissance
+
+This product includes software developed by:
+- React (MIT License)
+- TypeScript (Apache 2.0 License)
+- Vite (MIT License)
+- Recharts (MIT License)
+
+For complete license information, see LICENSE file.
+
+Project Links:
+- GitHub: https://github.com/gitdeeper12/IKPS
+- GitLab: https://gitlab.com/gitdeeper12/IKPS
+- Documentation: https://ikps.netlify.app
+
+Contact: gitdeeper@gmail.com
+
+---
+
+Core Principles:
+1. Strict functional separation between layers
+2. No interference between layer tasks
+3. No evaluation or comparison between outputs
+4. Each report is temporally and functionally independent
+5. Data deficiency is recorded as given, not as a defect
+6. No final canonical reference of the system
+
+"The system is a pure structural mirror that refuses interpretive freezing."

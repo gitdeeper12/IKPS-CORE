@@ -1,0 +1,8 @@
+# ENTRO-AI Netlify Redirects
+/*    /index.html   200
+
+# API routes
+/api/* /.netlify/functions/psi-dashboard/:splat 200
+
+# Report routes
+/reports/* /reports/:splat 200

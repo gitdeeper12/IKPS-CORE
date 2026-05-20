@@ -1,0 +1,16 @@
+# IKPS v1.0.0 Core Requirements
+# Pure TypeScript/React - No Python dependencies
+
+# Runtime
+react>=18.2.0
+react-dom>=18.2.0
+
+# Development
+typescript>=5.0.0
+vite>=4.0.0
+
+# Testing
+jest>=29.0.0
+
+# Charts
+recharts>=2.8.0

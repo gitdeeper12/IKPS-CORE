@@ -1,0 +1,16 @@
+AUTHORS.md
+CHANGELOG.md
+LICENSE
+MANIFEST.in
+NOTICE
+README.md
+pyproject.toml
+setup.py
+data/real/reddit_data.json
+src/ikps_core/__init__.py
+src/ikps_core.egg-info/PKG-INFO
+src/ikps_core.egg-info/SOURCES.txt
+src/ikps_core.egg-info/dependency_links.txt
+src/ikps_core.egg-info/not-zip-safe
+src/ikps_core.egg-info/requires.txt
+src/ikps_core.egg-info/top_level.txt

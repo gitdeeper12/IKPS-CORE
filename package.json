@@ -1,0 +1,31 @@
+{
+  "name": "ikps-core",
+  "version": "2.0.0",
+  "description": "DSFT-TD V2: Dynamic Semantic Field Theory - Temporal Framework for Semantic Force Dynamics",
+  "main": "src/index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "validate:real": "node validation/run_real_validation.js",
+    "import:reddit": "node data/importers/reddit_importer.js",
+    "benchmark:all": "node benchmarks/runner.js",
+    "benchmark:transitions": "node benchmarks/v2_complete_validation.js",
+    "benchmark:latency": "node benchmarks/transition_metrics/transition_latency_v2.js",
+    "benchmark:drift": "node benchmarks/drift_prediction/drift_prediction.js",
+    "benchmark:stability": "node benchmarks/long_form/long_duration_tests.js",
+    "test:reproducibility": "./scripts/verify_reproducibility.sh",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "semantic-dynamics",
+    "temporal-classification",
+    "force-fields",
+    "dsft"
+  ],
+  "author": "Samir Baladi",
+  "license": "MIT",
+  "type": "commonjs"
+}

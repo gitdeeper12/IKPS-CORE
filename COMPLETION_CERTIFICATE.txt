@@ -1,0 +1,120 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║                        IKPS PROJECT COMPLETION CERTIFICATE                    ║
+║                                                                               ║
+║               Internal Knowledge Production System (IKPS)                    ║
+║                                                                               ║
+║                           v1.0.0                                             ║
+║                           May 2026                                           ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+This certificate formally acknowledges the completion of Project IKPS,
+a three-layer architectural framework for internal knowledge production within
+research laboratories, based on strict functional separation between entity
+definition, interaction analysis, and time-sliced documentation.
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│ PROJECT OVERVIEW                                                              │
+├───────────────────────────────────────────────────────────────────────────────┤
+
+Project Code:     IKPS
+Version:          1.0.0
+Principal Investigator: Samir Baladi
+Affiliation:      Ronin Institute / Rite of Renaissance
+Submission Date:  May 2026
+Status:           ✅ COMPLETED
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│ THEORETICAL ACHIEVEMENTS                                                      │
+├───────────────────────────────────────────────────────────────────────────────┤
+
+✓ Three-Layer Architecture
+  - Layer 1: Entity Layer (define entities as independent elements)
+  - Layer 2: Interaction Layer (analyze what emerges from interactions)
+  - Layer 3: Documentation Layer (time-sliced snapshots, no analysis)
+
+✓ Core Rules
+  - Strict functional separation between layers
+  - No interference between layer tasks
+  - No evaluation or comparison between outputs
+  - Each report is temporally and functionally independent
+  - Data deficiency is recorded as given, not as a defect
+  - No final canonical reference of the system
+
+✓ Mathematical Formulation
+  - Projection operator: \(\hat{\mathcal{P}}: \mathcal{D}(t) \longrightarrow \mathrm{EPS}(t)\)
+  - No-storage condition: \(\mathrm{EPS}(t_1) \cap \mathrm{EPS}(t_2) = \emptyset\)
+  - Four-curve projection: Semantic Drift, Epistemic Entropy, Assumption Field, Affective Dimension
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│ CORE PRINCIPLES                                                               │
+├───────────────────────────────────────────────────────────────────────────────┤
+
+┌─────────────────────────────────┬─────────────────────────────────────────────┐
+│ Principle                       │ Value                                       │
+├─────────────────────────────────┼─────────────────────────────────────────────┤
+│ No Canonical Representation     │ Enforced                                    │
+│ Time-Sliced Snapshots           │ Each report independent                    │
+│ Semantic Neutrality             │ No interpretation, no merging              │
+│ Observer Freedom                │ Full interpretation delegated to user      │
+└─────────────────────────────────┴─────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│ PHILOSOPHICAL FOUNDATIONS                                                     │
+├───────────────────────────────────────────────────────────────────────────────┤
+
+1. Rejection of Interpretive Freezing
+   - No static reference copy within the system
+
+2. From Recording to Projection
+   - Knowledge is launched, not stored
+
+3. Simultaneous Multi-Projection
+   - 4 independent curves, no forced integration
+
+4. Pure Structural Mirror
+   - System "reflects" only, never "interprets" or "synthesizes"
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│ COMMONALITY WITH LLMs                                                         │
+├───────────────────────────────────────────────────────────────────────────────┤
+
+Both IKPS and LLMs share:
+- No canonical representation (no stored "truth")
+- Time-sliced independent snapshots
+- Dual-aspect engine (decomposition + composition)
+- Semantic neutrality (interpretation delegated to observer)
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│ DEPLOYMENT PLATFORMS                                                          │
+├───────────────────────────────────────────────────────────────────────────────┤
+
+┌─────────────────┬─────────────────────────────────────────────────────────────┐
+│ Platform        │ URL                                                         │
+├─────────────────┼─────────────────────────────────────────────────────────────┤
+│ GitHub          │ https://github.com/gitdeeper12/IKPS                        │
+│ GitLab          │ https://gitlab.com/gitdeeper12/IKPS                        │
+│ Documentation   │ https://ikps.netlify.app                                   │
+└─────────────────┴─────────────────────────────────────────────────────────────┘
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│ PRINCIPAL INVESTIGATOR                                                        │
+├───────────────────────────────────────────────────────────────────────────────┤
+
+Name:     Samir Baladi
+Title:    Principal Investigator, Interdisciplinary AI Researcher
+Email:    gitdeeper@gmail.com
+ORCID:    0009-0003-8903-0029
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                                                                               ║
+║   "Knowledge is not recorded. It is projected into a multi-dimensional       ║
+║    space moment by moment. The system is a pure structural mirror that       ║
+║    refuses interpretive freezing."                                           ║
+║                                                                               ║
+║                              — Samir Baladi, May 2026                         ║
+║                                                                               ║
+║                              ✅ COMPLETED                                     ║
+║                                                                               ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
